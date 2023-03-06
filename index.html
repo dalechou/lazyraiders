@@ -29,7 +29,7 @@
 
 				players.forEach(player => {
 					const [name, realm] = player.split('-');
-					const url = `https://raider.io/api/v1/characters/profile?region=us&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs`;
+					const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs`;
 
 					fetch(url)
 						.then(response => response.json())
