@@ -2,10 +2,8 @@ const axios = require('axios');
 const Table = require('cli-table');
 
 const url = 'https://raider.io/api/v1/characters/profile';
-const region = 'us';
+const region = 'tw';
 const locale = 'en';
-const raid = 'castle-nathria';
-const dungeon = 'plaguefall';
 const daysAgo = 7;
 
 const characters = [];
