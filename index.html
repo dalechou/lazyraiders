@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.1.0</h1>
+    <h1>Lazyraiders - v1.1.0a</h1>
     <table>
         <thead>
             <tr>
@@ -35,7 +35,7 @@
                     return fetch(url)
                         .then(response => response.json())
                         .then(json => {
-                            const run = json.mythic_plus_weekly_highest_level_runs[0];
+                            const run = json.mythic_plus_weekly_highest_level_runs ? json.mythic_plus_weekly_highest_level_runs[0] : null;
                             const gear = json.gear;
 
                             // Count tier pieces
