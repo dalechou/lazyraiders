@@ -6,43 +6,47 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: #f9f9f9;
 }
 
 h1 {
     text-align: left;
-    color: #333;
+    color: #6a5acd; /* pastel purple */
     margin-left: 20px;
+    font-size: 2.5rem; /* larger font size */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    font-size: 18px;
+    font-size: 1.2rem; /* larger font size */
     text-align: left;
-    background-color: #f9f9f9;
+    background-color: #ffffff; /* white background */
+    border: 2px solid #dcdcdc; /* light grey border */
+    border-radius: 10px; /* rounded corners */
 }
 
 th, td {
-    padding: 12px;
+    padding: 15px; /* increase padding */
     border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: #e0e4e8;
+    background-color: #ffb6c1; /* light pink */
     color: #333;
 }
 
 tr:hover {
-    background-color: #f1f4f8;
+    background-color: #ffe4e1; /* pastel peach */
 }
 
 @media (max-width: 600px) {
     table {
-        font-size: 14px;
+        font-size: 1rem; /* adjust font size for smaller screens */
     }
 
     th, td {
-        padding: 8px;
+        padding: 10px; /* adjust padding for smaller screens */
     }
 }
