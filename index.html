@@ -7,8 +7,8 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.1.0h</h1>
-    <p>Known issue: tier piece(s) info is broken.</p>
+    <h1>Lazyraiders - v1.1.0</h1>
+    <p>Known issue: tier piece(s) not tallied correctly.</p>
     <table>
         <thead>
             <tr>
@@ -50,10 +50,14 @@
 
                             // Count tier pieces
                             const tierPieces = {};
-                            if (gear && Array.isArray(gear.items)) {
+                            if (gear && gear.items) {
                                 gear.items.forEach(item => {
-                                    if (item && item.tier && item.tier !== 999) {
-                                        tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
+                                    if (item && item.bonus_lists) {
+                                        item.bonus_lists.forEach(bonus => {
+                                            if (bonus === 32) {
+                                                tierPieces[bonus] = (tierPieces[bonus] || 0) + 1;
+                                            }
+                                        });
                                     }
                                 });
                             } else {
