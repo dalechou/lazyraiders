@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.1.0a</h1>
+    <h1>Lazyraiders - v1.1.0b</h1>
     <table>
         <thead>
             <tr>
@@ -41,11 +41,14 @@
                             // Count tier pieces
                             const tierPieces = {};
                             if (gear && Array.isArray(gear.items)) { // Ensure gear.items is an array
+                                console.log(`Processing gear items for ${name}`, gear.items);
                                 gear.items.forEach(item => {
                                     if (item.tier && item.tier !== 999) { // Exclude tier 999
                                         tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                     }
                                 });
+                            } else {
+                                console.warn(`No valid gear items for ${name}`);
                             }
 
                             return {
