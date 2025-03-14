@@ -7,12 +7,13 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.0.1</h1>
+    <h1>Lazyraiders - v1.1.0</h1>
     <table>
         <thead>
             <tr>
                 <th>character</th>
                 <th>item level</th>
+                <th>tier piece(s)</th> <!-- Added new column for tier pieces -->
                 <th>key</th>
                 <th>date</th>
             </tr>
@@ -37,11 +38,22 @@
                             const run = json.mythic_plus_weekly_highest_level_runs[0];
                             const gear = json.gear;
 
+                            // Count tier pieces
+                            const tierPieces = {};
+                            if (gear && gear.items) {
+                                gear.items.forEach(item => {
+                                    if (item.tier && item.tier !== 999) { // Exclude tier 999
+                                        tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
+                                    }
+                                });
+                            }
+
                             return {
                                 name,
                                 ilvl: gear && gear.item_level_equipped ? Math.round(gear.item_level_equipped) : null,
                                 key: run ? run.mythic_level : 'n/a',
-                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a'
+                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a',
+                                tierPieces
                             };
                         })
                         .catch(error => {
@@ -66,6 +78,12 @@
                         const ilvlTd = document.createElement('td');
                         ilvlTd.textContent = result.ilvl !== null ? result.ilvl : 'n/a';
                         tr.appendChild(ilvlTd);
+
+                        // Display tier pieces
+                        const tierTd = document.createElement('td');
+                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} × ${count}`).join(', ');
+                        tierTd.textContent = tierText || 'n/a';
+                        tr.appendChild(tierTd);
 
                         const keyTd = document.createElement('td');
                         keyTd.textContent = result.key;
