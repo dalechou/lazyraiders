@@ -26,6 +26,7 @@
             .then(response => response.text())
             .then(text => {
                 const players = text.trim().split('\n');
+                console.log('Players:', players);
                 const promises = players.map(player => {
                     const [name, realm] = player.split('-');
                     const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs,gear`;
@@ -50,6 +51,7 @@
                 });
 
                 Promise.all(promises).then(results => {
+                    console.log('Results:', results);
                     const validResults = results.filter(result => result !== null);
                     const sortedResults = validResults.sort((a, b) => (a.ilvl !== null ? a.ilvl : Infinity) - (b.ilvl !== null ? b.ilvl : Infinity));
                     const tbody = document.getElementById('raiderio-data');
@@ -75,5 +77,13 @@
 
                         tbody.appendChild(tr);
                     });
+                }).catch(error => {
+                    console.error('Error resolving promises:', error);
                 });
- ▋
+            })
+            .catch(error => {
+                console.error('Error fetching players.txt:', error);
+            });
+    </script>
+</body>
+</html>
