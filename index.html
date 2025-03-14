@@ -91,7 +91,7 @@
 
                         // Display tier pieces
                         const tierTd = document.createElement('td');
-                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `tier: ${tier} × ${count}`).join(', ');
+                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} × ${count}`).join(', ');
                         tierTd.textContent = tierText || 'n/a';
                         tr.appendChild(tierTd);
 
