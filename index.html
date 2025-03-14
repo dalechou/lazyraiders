@@ -12,8 +12,7 @@
         <thead>
             <tr>
                 <th>character</th>
-                <th>item level</th>
-                <th>tier set(s)</th>
+                <th>item level & tp</th>
                 <th>key</th>
                 <th>date</th>
             </tr>
@@ -76,7 +75,8 @@
                         tr.appendChild(nameTd);
 
                         const ilvlTd = document.createElement('td');
-                        ilvlTd.textContent = result.ilvl !== null ? result.ilvl : 'n/a';
+                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} x ${count}`).join(', ');
+                        ilvlTd.textContent = result.ilvl !== null ? `${result.ilvl} (${tierText})` : 'n/a'; // Combined item level and tier pieces
                         tr.appendChild(ilvlTd);
 
                         const keyTd = document.createElement('td');
@@ -86,12 +86,6 @@
                         const timeTd = document.createElement('td');
                         timeTd.textContent = result.time;
                         tr.appendChild(timeTd);
-
-                        // Display tier pieces
-                        const tierTd = document.createElement('td');
-                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} x ${count}`).join(', ');
-                        tierTd.textContent = tierText || 'n/a';
-                        tr.appendChild(tierTd);
 
                         tbody.appendChild(tr);
                     });
