@@ -48,11 +48,12 @@
                             // Log the gear items to understand their structure
                             console.log(`Gear items for ${name}:`, gear.items);
 
-                            // Count tier pieces
+                            // Count tier pieces from specific items
                             const tierPieces = {};
+                            const validItems = ['chest', 'hands', 'head', 'legs', 'shoulder'];
                             if (gear && Array.isArray(gear.items)) {
                                 gear.items.forEach(item => {
-                                    if (item && item.tier && item.tier !== 999) {
+                                    if (item && validItems.includes(item.slot) && item.tier && item.tier !== 999) {
                                         tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                     }
                                 });
