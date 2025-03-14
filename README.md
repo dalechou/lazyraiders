@@ -1,6 +1,4 @@
 # lazyraiders
-Provide an overview of raiders on their mythic+ activities in World of Warcraft.
+Provide an overview of raiders with their item level and latest mythic+ activity in World of Warcraft.
 
-I did not write the code.  ChatGPT did.
-
-I wrote something similar in June, 2019 in Python.  The project was called the same name, "layraiders".  I asked ChatGPT to write the samething for Web.
+I wrote something similar in June 2019 in Python. The project was called 'lazyraiders'. I used ChatGPT to get the Web version, Copilot to add item level column and style sheet.
