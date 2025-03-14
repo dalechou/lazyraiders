@@ -52,12 +52,8 @@
                             const tierPieces = {};
                             if (gear && Array.isArray(gear.items)) {
                                 gear.items.forEach(item => {
-                                    if (item && item.bonus_lists) {
-                                        item.bonus_lists.forEach(bonus => {
-                                            if (bonus === 32) {
-                                                tierPieces[bonus] = (tierPieces[bonus] || 0) + 1;
-                                            }
-                                        });
+                                    if (item && item.tier && item.tier !== 999) {
+                                        tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                     }
                                 });
                             } else {
