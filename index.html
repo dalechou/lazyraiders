@@ -39,25 +39,31 @@
                             const run = json.mythic_plus_weekly_highest_level_runs ? json.mythic_plus_weekly_highest_level_runs[0] : null;
                             const gear = json.gear;
 
+                            // Check if gear is defined
+                            if (!gear) {
+                                console.warn(`Gear is undefined for ${name}`);
+                                return null;
+                            }
+
                             // Log the gear items to understand their structure
                             console.log(`Gear items for ${name}:`, gear.items);
 
                             // Count tier pieces from specific items
                             const tierPieces = {};
-                            const validItems = ['chest', 'hands', 'head', 'legs', 'shoulder'];                            
-                                        if (validItems.tier && validItems.tier !== 999) {
-                                            tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
-                                        }
-                            } else {
-                                console.warn(`Something is wrong: ${name}`);
-                            }
+                            const validItems = ['chest', 'hands', 'head', 'legs', 'shoulder'];
+                            validItems.forEach(slot => {
+                                if (gear.items && gear.items[slot] && gear.items[slot].tier && gear.items[slot].tier !== 999) {
+                                    const item = gear.items[slot];
+                                    tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
+                                }
+                            });
 
                             return {
                                 name,
                                 ilvl: gear && gear.item_level_equipped ? Math.round(gear.item_level_equipped) : null,
-                                tierPieces,
                                 key: run ? run.mythic_level : 'n/a',
-                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a'
+                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a',
+                                tierPieces
                             };
                         })
                         .catch(error => {
