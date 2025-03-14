@@ -55,9 +55,9 @@
                             return {
                                 name,
                                 ilvl: gear && gear.item_level_equipped ? Math.round(gear.item_level_equipped) : null,
+                                tierPieces,
                                 key: run ? run.mythic_level : 'n/a',
-                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a',
-                                tierPieces
+                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a'
                             };
                         })
                         .catch(error => {
