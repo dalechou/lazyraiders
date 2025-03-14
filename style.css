@@ -12,7 +12,7 @@ body {
 
 h1 {
     text-align: left;
-    color: #6a5acd; /* mellow purple */
+    color: #8fbc8f; /* mellow green */
     margin-left: 20px;
     font-size: 2.5rem; /* larger font size */
 }
@@ -34,12 +34,12 @@ th, td {
 }
 
 th {
-    background-color: #3b5998; /* blue */
+    background-color: #4682b4; /* blue */
     color: #dcdcdc; /* light grey text */
 }
 
 tr:hover {
-    background-color: #ff4500; /* Moroccan orange */
+    background-color: #a0522d; /* mellow brown */
     color: #121212; /* dark text */
 }
 
