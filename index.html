@@ -55,7 +55,7 @@
                                 Object.keys(gear.items).forEach(slot => {
                                     if (validItems.includes(slot)) {
                                         const item = gear.items[slot];
-                                        if (item && item.tier && item.tier !== 999) {
+                                        if (item_id !== 0 && item.tier && item.tier !== 999) {
                                             tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                         }
                                     }
