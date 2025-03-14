@@ -13,7 +13,7 @@
             <tr>
                 <th>character</th>
                 <th>item level</th>
-                <th>tier piece(s)</th> <!-- Added new column for tier pieces -->
+                <th>tier piece(s)</th>
                 <th>key</th>
                 <th>date</th>
             </tr>
@@ -40,7 +40,7 @@
 
                             // Count tier pieces
                             const tierPieces = {};
-                            if (gear && gear.items) {
+                            if (gear && Array.isArray(gear.items)) { // Ensure gear.items is an array
                                 gear.items.forEach(item => {
                                     if (item.tier && item.tier !== 999) { // Exclude tier 999
                                         tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
