@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.1.0e</h1>
+    <h1>Lazyraiders - v1.1.0f</h1>
     <table>
         <thead>
             <tr>
@@ -38,12 +38,14 @@
                             const run = json.mythic_plus_weekly_highest_level_runs ? json.mythic_plus_weekly_highest_level_runs[0] : null;
                             const gear = json.gear;
 
+                            // Log the gear items to understand their structure
+                            console.log(`Gear items for ${name}:`, gear.items);
+
                             // Count tier pieces
                             const tierPieces = {};
-                            if (gear && Array.isArray(gear.items)) { // Ensure gear.items is an array
-                                console.log(`Processing gear items for ${name}`, gear.items);
+                            if (gear && Array.isArray(gear.items)) {
                                 gear.items.forEach(item => {
-                                    if (item.tier && item.tier !== 999) { // Adjusted to access the correct tier level
+                                    if (item && item.tier && item.tier !== 999) { 
                                         tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                     }
                                 });
