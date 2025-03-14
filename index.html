@@ -44,18 +44,12 @@
 
                             // Count tier pieces from specific items
                             const tierPieces = {};
-                            const validItems = ['chest', 'hands', 'head', 'legs', 'shoulder'];
-                            if (gear && Array.isArray(gear.items)) {
-                                Object.keys(gear.items).forEach(slot => {
-                                    if (validItems.includes(slot)) {
-                                        const item = gear.items[slot];
-                                        if (item_id !== 0 && item.tier && item.tier !== 999) {
+                            const validItems = ['chest', 'hands', 'head', 'legs', 'shoulder'];                            
+                                        if (validItems.tier && validItems.tier !== 999) {
                                             tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                         }
-                                    }
-                                });
                             } else {
-                                console.warn(`${name} does not exist`);
+                                console.warn(`Something is wrong: ${name}`);
                             }
 
                             return {
