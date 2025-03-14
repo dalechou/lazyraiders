@@ -12,7 +12,8 @@
 		<thead>
 			<tr>
 				<th>Player</th>
-				<th>Key</th>
+				<th>ilvl</th>
+                <th>Key</th>
 				<th>Time</th>
 			</tr>
 		</thead>
@@ -42,13 +43,13 @@
 							nameTd.textContent = `${name}`;
 							tr.appendChild(nameTd);
 
-							const levelTd = document.createElement('td');
-							levelTd.textContent = run ? run.mythic_level : 'n/a';
-							tr.appendChild(levelTd);
-
 							const gearTd = document.createElement('td');
 							gearTd.textContent = run ? run.gear : 'n/a';
 							tr.appendChild(gearTd);
+                            
+                            const levelTd = document.createElement('td');
+							levelTd.textContent = run ? run.mythic_level : 'n/a';
+							tr.appendChild(levelTd);
 
 							const completedTd = document.createElement('td');
 							completedTd.textContent = run ? run.completed_at : 'n/a';
