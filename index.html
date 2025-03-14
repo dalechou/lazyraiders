@@ -1,66 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Lazyraiders</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Lazyraiders</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h1>Lazyraiders - v.3</h1>
-	<table>
-		<thead>
-			<tr>
-				<th>char</th>
-				<th>ilvl</th>
+    <h1>Lazyraiders - v1.0.0</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>char</th>
+                <th>ilvl</th>
                 <th>key</th>
-				<th>time</th>
-			</tr>
-		</thead>
-		<tbody id="raiderio-data">
-		</tbody>
-	</table>
+                <th>time</th>
+            </tr>
+        </thead>
+        <tbody id="raiderio-data">
+        </tbody>
+    </table>
 
-<script>
-    fetch('players.txt')
-        .then(response => response.text())
-        .then(text => {
-            const players = text.trim().split('\n');
-            const tbody = document.getElementById('raiderio-data');
+    <script>
+        fetch('players.txt')
+            .then(response => response.text())
+            .then(text => {
+                const players = text.trim().split('\n');
+                const promises = players.map(player => {
+                    const [name, realm] = player.split('-');
+                    const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs,gear`;
 
-            players.forEach(player => {
-                const [name, realm] = player.split('-');
-                const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs,gear`;
+                    return fetch(url)
+                        .then(response => response.json())
+                        .then(json => {
+                            const run = json.mythic_plus_weekly_highest_level_runs[0];
+                            const gear = json.gear;
 
-                fetch(url)
-                    .then(response => response.json())
-                    .then(json => {
-                        const run = json.mythic_plus_weekly_highest_level_runs[0];
-                        const gear = json.gear;
+                            return {
+                                name,
+                                ilvl: gear ? Math.round(gear.item_level_equipped) : 'n/a',
+                                key: run ? run.mythic_level : 'n/a',
+                                time: run ? run.completed_at : 'n/a'
+                            };
+                        });
+                });
 
+                Promise.all(promises).then(results => {
+                    const sortedResults = results.sort((a, b) => a.ilvl - b.ilvl);
+                    const tbody = document.getElementById('raiderio-data');
+
+                    sortedResults.forEach(result => {
                         const tr = document.createElement('tr');
 
                         const nameTd = document.createElement('td');
-                        nameTd.textContent = `${name}`;
+                        nameTd.textContent = result.name;
                         tr.appendChild(nameTd);
 
                         const ilvlTd = document.createElement('td');
-                        ilvlTd.textContent = gear ? gear.item_level_equipped : 'n/a';
+                        ilvlTd.textContent = result.ilvl;
                         tr.appendChild(ilvlTd);
 
                         const keyTd = document.createElement('td');
-                        keyTd.textContent = run ? run.mythic_level : 'n/a';
+                        keyTd.textContent = result.key;
                         tr.appendChild(keyTd);
 
                         const timeTd = document.createElement('td');
-                        timeTd.textContent = run ? run.completed_at : 'n/a';
+                        timeTd.textContent = result.time;
                         tr.appendChild(timeTd);
 
                         tbody.appendChild(tr);
                     });
+                });
             });
-        });
-</script>
-
+    </script>
 </body>
 </html>
