@@ -39,12 +39,6 @@
                             const run = json.mythic_plus_weekly_highest_level_runs ? json.mythic_plus_weekly_highest_level_runs[0] : null;
                             const gear = json.gear;
 
-                            // Check if gear is defined
-                            if (!gear) {
-                                console.warn(`Gear is undefined for ${name}`);
-                                return null;
-                            }
-
                             // Log the gear items to understand their structure
                             console.log(`Gear items for ${name}:`, gear.items);
 
@@ -61,7 +55,7 @@
                                     }
                                 });
                             } else {
-                                console.warn(`No valid gear items for ${name}`);
+                                console.warn(`${name} does not exist`);
                             }
 
                             return {
