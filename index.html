@@ -21,40 +21,46 @@
 		</tbody>
 	</table>
 
-	<script>
-		fetch('players.txt')
-			.then(response => response.text())
-			.then(text => {
-				const players = text.trim().split('\n');
-				const tbody = document.getElementById('raiderio-data');
+<script>
+    fetch('players.txt')
+        .then(response => response.text())
+        .then(text => {
+            const players = text.trim().split('\n');
+            const tbody = document.getElementById('raiderio-data');
 
-				players.forEach(player => {
-					const [name, realm] = player.split('-');
-					const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs`;
+            players.forEach(player => {
+                const [name, realm] = player.split('-');
+                const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs,gear`;
 
-					fetch(url)
-						.then(response => response.json())
-						.then(json => {
-							const run = json.mythic_plus_weekly_highest_level_runs[0];
+                fetch(url)
+                    .then(response => response.json())
+                    .then(json => {
+                        const run = json.mythic_plus_weekly_highest_level_runs[0];
+                        const gear = json.gear;
 
-							const tr = document.createElement('tr');
+                        const tr = document.createElement('tr');
 
-							const nameTd = document.createElement('td');
-							nameTd.textContent = `${name}`;
-							tr.appendChild(nameTd);
+                        const nameTd = document.createElement('td');
+                        nameTd.textContent = `${name}`;
+                        tr.appendChild(nameTd);
 
-                            const levelTd = document.createElement('td');
-							levelTd.textContent = run ? run.mythic_level : 'n/a';
-							tr.appendChild(levelTd);
+                        const ilvlTd = document.createElement('td');
+                        ilvlTd.textContent = gear ? gear.item_level_equipped : 'n/a';
+                        tr.appendChild(ilvlTd);
 
-							const completedTd = document.createElement('td');
-							completedTd.textContent = run ? run.completed_at : 'n/a';
-							tr.appendChild(completedTd);
+                        const keyTd = document.createElement('td');
+                        keyTd.textContent = run ? run.mythic_level : 'n/a';
+                        tr.appendChild(keyTd);
 
-							tbody.appendChild(tr);
-						});
-				});
-			});
-	</script>
+                        const timeTd = document.createElement('td');
+                        timeTd.textContent = run ? run.completed_at : 'n/a';
+                        tr.appendChild(timeTd);
+
+                        tbody.appendChild(tr);
+                    });
+            });
+        });
+</script>
+
 </body>
 </html>
