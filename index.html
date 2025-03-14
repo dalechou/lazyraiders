@@ -7,12 +7,12 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.1.0</h1>
+    <h1>Lazyraiders - v1.0.1</h1>
     <table>
         <thead>
             <tr>
                 <th>character</th>
-                <th>item level & tp</th>
+                <th>item level</th>
                 <th>key</th>
                 <th>date</th>
             </tr>
@@ -37,22 +37,11 @@
                             const run = json.mythic_plus_weekly_highest_level_runs[0];
                             const gear = json.gear;
 
-                            // Count tier pieces
-                            const tierPieces = {};
-                            if (gear && gear.items) {
-                                gear.items.forEach(item => {
-                                    if (item.tier) {
-                                        tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
-                                    }
-                                });
-                            }
-
                             return {
                                 name,
                                 ilvl: gear && gear.item_level_equipped ? Math.round(gear.item_level_equipped) : null,
                                 key: run ? run.mythic_level : 'n/a',
-                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a',
-                                tierPieces
+                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a'
                             };
                         })
                         .catch(error => {
@@ -75,8 +64,7 @@
                         tr.appendChild(nameTd);
 
                         const ilvlTd = document.createElement('td');
-                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} x ${count}`).join(', ');
-                        ilvlTd.textContent = result.ilvl !== null ? `${result.ilvl} (${tierText})` : 'n/a'; // Combined item level and tier pieces
+                        ilvlTd.textContent = result.ilvl !== null ? result.ilvl : 'n/a';
                         tr.appendChild(ilvlTd);
 
                         const keyTd = document.createElement('td');
