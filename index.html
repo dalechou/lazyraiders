@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.1.0g</h1>
+    <h1>Lazyraiders - v1.1.0h</h1>
     <table>
         <thead>
             <tr>
@@ -45,8 +45,8 @@
                             const tierPieces = {};
                             if (gear && Array.isArray(gear.items)) {
                                 gear.items.forEach(item => {
-                                    if (item && item.bonus_lists && item.bonus_lists.includes(999)) { // Adjust to correct nested structure
-                                        tierPieces[item.bonus_lists] = (tierPieces[item.bonus_lists] || 0) + 1;
+                                    if (item && item.tier && item.tier !== 999) {
+                                        tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                     }
                                 });
                             } else {
@@ -86,7 +86,7 @@
 
                         // Display tier pieces
                         const tierTd = document.createElement('td');
-                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} × ${count}`).join(', ');
+                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `tier: ${tier} × ${count}`).join(', ');
                         tierTd.textContent = tierText || 'n/a';
                         tr.appendChild(tierTd);
 
