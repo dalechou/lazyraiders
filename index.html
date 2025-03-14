@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-	<h1>Lazyraiders - v.3</h1>
+	<h1>Lazyraiders - v.2</h1>
 	<table>
 		<thead>
 			<tr>
@@ -30,12 +30,13 @@
 
 				players.forEach(player => {
 					const [name, realm] = player.split('-');
-					const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=gear`;
+					const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs&fields=gear`;
 
 					fetch(url)
 						.then(response => response.json())
 						.then(json => {
 							const run = json.mythic_plus_weekly_highest_level_runs[0];
+                            const run = json.gear[0];
 
 							const tr = document.createElement('tr');
 
