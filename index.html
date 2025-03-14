@@ -42,7 +42,7 @@
                             const tierPieces = {};
                             if (gear && gear.items) {
                                 gear.items.forEach(item => {
-                                    if (item.tier) {
+                                    if (item.tier && item.tier !== 999) { // Exclude tier 999
                                         tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
                                     }
                                 });
