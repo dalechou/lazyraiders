@@ -34,12 +34,12 @@ th, td {
 }
 
 th {
-    background-color: #4682b4; /* blue */
-    color: #dcdcdc; /* light grey text */
+    background-color: #8fbc8f; /* same mellow green as the heading */
+    color: #121212; /* dark text */
 }
 
 tr:hover {
-    background-color: #a0522d; /* mellow brown */
+    background-color: #8fbc8f; /* same mellow green as the heading */
     color: #121212; /* dark text */
 }
 
