@@ -6,12 +6,13 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #f9f9f9;
+    background-color: #121212; /* dark background */
+    color: #dcdcdc; /* light grey text */
 }
 
 h1 {
     text-align: left;
-    color: #6a5acd; /* pastel purple */
+    color: #6a5acd; /* mellow purple */
     margin-left: 20px;
     font-size: 2.5rem; /* larger font size */
 }
@@ -22,23 +23,24 @@ table {
     margin: 20px 0;
     font-size: 1.2rem; /* larger font size */
     text-align: left;
-    background-color: #ffffff; /* white background */
-    border: 2px solid #dcdcdc; /* light grey border */
+    background-color: #1e1e1e; /* dark background */
+    border: 2px solid #444; /* dark grey border */
     border-radius: 10px; /* rounded corners */
 }
 
 th, td {
     padding: 15px; /* increase padding */
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #333; /* dark grey border */
 }
 
 th {
-    background-color: #ffb6c1; /* light pink */
-    color: #333;
+    background-color: #3b5998; /* blue */
+    color: #dcdcdc; /* light grey text */
 }
 
 tr:hover {
-    background-color: #ffe4e1; /* pastel peach */
+    background-color: #ff4500; /* Moroccan orange */
+    color: #121212; /* dark text */
 }
 
 @media (max-width: 600px) {
