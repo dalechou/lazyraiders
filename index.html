@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v.2</h1>
+    <h1>Lazyraiders - v1.0.0</h1>
     <table>
         <thead>
             <tr>
@@ -40,7 +40,7 @@
                                 name,
                                 ilvl: gear && gear.item_level_equipped ? Math.round(gear.item_level_equipped) : null,
                                 key: run ? run.mythic_level : 'n/a',
-                                time: run ? run.completed_at : 'n/a'
+                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a'
                             };
                         })
                         .catch(error => {
@@ -76,7 +76,4 @@
                         tbody.appendChild(tr);
                     });
                 });
-            });
-    </script>
-</body>
-</html>
+ ▋
