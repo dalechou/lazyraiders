@@ -52,9 +52,12 @@
                             const tierPieces = {};
                             const validItems = ['chest', 'hands', 'head', 'legs', 'shoulder'];
                             if (gear && Array.isArray(gear.items)) {
-                                gear.items.forEach(item => {
-                                    if (item && validItems.includes(item.slot) && item.tier && item.tier !== 999) {
-                                        tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
+                                Object.keys(gear.items).forEach(slot => {
+                                    if (validItems.includes(slot)) {
+                                        const item = gear.items[slot];
+                                        if (item && item.tier && item.tier !== 999) {
+                                            tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
+                                        }
                                     }
                                 });
                             } else {
