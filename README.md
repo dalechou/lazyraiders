@@ -9,3 +9,7 @@ I wrote the tool in June 2019 in Python, then I used ChatGPT to get the Web vers
 # How to use this tool?
 
 Fork this repository; update players.txt. That's it!
+
+# Contact
+
+URL: https://dale.distract.org/contact.html
