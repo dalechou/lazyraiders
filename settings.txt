@@ -1,0 +1,9 @@
+# This file configures the settings used in index.html.
+# Where are you raiding? Acceptable regions are 'us', 'eu', 'tw', 'kr', and 'cn'.
+region=tw
+
+# What tier pieces are we tracking? You probably do not need to update this setting.
+tierSlots=chest, hands, head, legs, shoulder
+
+# What mythic+ level keys are we tracking?
+keyThreshold=10

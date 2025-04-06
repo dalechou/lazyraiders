@@ -7,14 +7,15 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Lazyraiders - v1.1.1</h1>
+    <h1>Lazyraiders - v1.2.0</h1>
     <table>
         <thead>
             <tr>
                 <th>character</th>
                 <th>item level</th>
                 <th>tier piece(s)</th>
-                <th>key</th>
+                <th id="keys-threshold-header">keys</th>
+                <th>highest key</th>
                 <th>run date</th>
             </tr>
         </thead>
@@ -23,93 +24,119 @@
     </table>
 
     <script>
-        fetch('players.txt')
+        fetch('settings.txt')
             .then(response => response.text())
-            .then(text => {
-                const players = text.trim().split('\n');
-                console.log('Players:', players);
-                const promises = players.map(player => {
-                    const [name, realm] = player.split('-');
-                    const url = `https://raider.io/api/v1/characters/profile?region=tw&realm=${realm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs,gear`;
+            .then(settings => {
+                const lines = settings.split('\n');
+                const region = lines.find(line => line.startsWith('region=')).split('=')[1].trim();
+                const tierSlots = lines.find(line => line.startsWith('tierSlots=')).split('=')[1].trim().split(/\s*,\s*/); // Handle spaces around commas
+                const keyThreshold = parseInt(lines.find(line => line.startsWith('keyThreshold=')).split('=')[1].trim(), 10);
 
-                    return fetch(url)
-                        .then(response => response.json())
-                        .then(json => {
-                            const run = json.mythic_plus_weekly_highest_level_runs ? json.mythic_plus_weekly_highest_level_runs[0] : null;
-                            const gear = json.gear;
+                // Update the column header based on keyThreshold
+                document.getElementById('keys-threshold-header').textContent = `keys ${keyThreshold}+`;
 
-                            // Check if gear is defined
-                            if (!gear) {
-                                console.warn(`Gear is undefined for ${name}`);
-                                return null;
-                            }
+                fetch('players.txt')
+                    .then(response => response.text())
+                    .then(text => {
+                        const players = text.trim().split('\n');
+                        console.log('Players:', players);
+                        const promises = players.map(player => {
+                            const [name, playerRealm] = player.split('-');
+                            const url = `https://raider.io/api/v1/characters/profile?region=${region}&realm=${playerRealm}&name=${name}&fields=mythic_plus_weekly_highest_level_runs,gear`;
 
-                            // Log the gear items to understand their structure
-                            console.log(`Gear items for ${name}:`, gear.items);
+                            return fetch(url)
+                                .then(response => response.json())
+                                .then(json => {
+                                    const runs = json.mythic_plus_weekly_highest_level_runs || [];
+                                    const gear = json.gear;
 
-                            // Count tier pieces from specific items
-                            const tierPieces = {};
-                            const validItems = ['chest', 'hands', 'head', 'legs', 'shoulder'];
-                            validItems.forEach(slot => {
-                                if (gear.items && gear.items[slot] && gear.items[slot].tier && gear.items[slot].tier !== 999) {
-                                    const item = gear.items[slot];
-                                    tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
-                                }
-                            });
+                                    // Check if gear is defined
+                                    if (!gear) {
+                                        console.warn(`Gear is undefined for ${name}`);
+                                        return null;
+                                    }
 
-                            return {
-                                name,
-                                ilvl: gear && gear.item_level_equipped ? Math.round(gear.item_level_equipped) : null,
-                                key: run ? run.mythic_level : 'n/a',
-                                time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a',
-                                tierPieces
-                            };
-                        })
-                        .catch(error => {
-                            console.error('Error fetching data for player:', name, error);
-                            return null;
+                                    // Log the gear items to understand their structure
+                                    console.log(`Gear items for ${name}:`, gear.items);
+
+                                    // Count tier pieces from specific items
+                                    const tierPieces = {};
+                                    tierSlots.forEach(slot => {
+                                        if (gear.items && gear.items[slot] && gear.items[slot].tier && gear.items[slot].tier !== 999) {
+                                            const item = gear.items[slot];
+                                            tierPieces[item.tier] = (tierPieces[item.tier] || 0) + 1;
+                                        }
+                                    });
+
+                                    // Count the number of keys done at or above the keyThreshold
+                                    const keysThresholdPlus = runs.filter(run => run.mythic_level >= keyThreshold).length;
+
+                                    const run = runs[0] || null;
+                                    const highestKeyInfo = run ? `${run.mythic_level}` : 'n/a';
+
+                                    return {
+                                        name,
+                                        ilvl: gear && gear.item_level_equipped ? Math.round(gear.item_level_equipped) : null,
+                                        highestKey: highestKeyInfo,
+                                        time: run ? new Date(run.completed_at).toISOString().split('T')[0] : 'n/a',
+                                        tierPieces,
+                                        keysThresholdPlus
+                                    };
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching data for player:', name, error);
+                                    return null;
+                                });
                         });
-                });
 
-                Promise.all(promises).then(results => {
-                    console.log('Results:', results);
-                    const validResults = results.filter(result => result !== null);
-                    const sortedResults = validResults.sort((a, b) => (a.ilvl !== null ? a.ilvl : Infinity) - (b.ilvl !== null ? b.ilvl : Infinity));
-                    const tbody = document.getElementById('raiderio-data');
+                        Promise.all(promises).then(results => {
+                            console.log('Results:', results);
+                            const validResults = results.filter(result => result !== null);
+                            const sortedResults = validResults.sort((a, b) => (a.ilvl !== null ? a.ilvl : Infinity) - (b.ilvl !== null ? b.ilvl : Infinity));
+                            const tbody = document.getElementById('raiderio-data');
 
-                    sortedResults.forEach(result => {
-                        const tr = document.createElement('tr');
+                            sortedResults.forEach(result => {
+                                const tr = document.createElement('tr');
 
-                        const nameTd = document.createElement('td');
-                        nameTd.textContent = result.name;
-                        tr.appendChild(nameTd);
+                                const nameTd = document.createElement('td');
+                                nameTd.textContent = result.name;
+                                tr.appendChild(nameTd);
 
-                        const ilvlTd = document.createElement('td');
-                        ilvlTd.textContent = result.ilvl !== null ? result.ilvl : 'n/a';
-                        tr.appendChild(ilvlTd);
+                                const ilvlTd = document.createElement('td');
+                                ilvlTd.textContent = result.ilvl !== null ? result.ilvl : 'n/a';
+                                tr.appendChild(ilvlTd);
 
-                        // Display tier pieces
-                        const tierTd = document.createElement('td');
-                        const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} × ${count}`).join(', ');
-                        tierTd.textContent = tierText || 'n/a';
-                        tr.appendChild(tierTd);
+                                // Display tier pieces
+                                const tierTd = document.createElement('td');
+                                const tierText = Object.entries(result.tierPieces).map(([tier, count]) => `${tier} × ${count}`).join(', ');
+                                tierTd.textContent = tierText || 'n/a';
+                                tr.appendChild(tierTd);
 
-                        const keyTd = document.createElement('td');
-                        keyTd.textContent = result.key;
-                        tr.appendChild(keyTd);
+                                // Display keys above threshold
+                                const keysThresholdPlusTd = document.createElement('td');
+                                keysThresholdPlusTd.textContent = result.keysThresholdPlus;
+                                tr.appendChild(keysThresholdPlusTd);
 
-                        const timeTd = document.createElement('td');
-                        timeTd.textContent = result.time;
-                        tr.appendChild(timeTd);
+                                const highestKeyTd = document.createElement('td');
+                                highestKeyTd.textContent = result.highestKey;
+                                tr.appendChild(highestKeyTd);
 
-                        tbody.appendChild(tr);
+                                const timeTd = document.createElement('td');
+                                timeTd.textContent = result.time;
+                                tr.appendChild(timeTd);
+
+                                tbody.appendChild(tr);
+                            });
+                        }).catch(error => {
+                            console.error('Error resolving promises:', error);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching players.txt:', error);
                     });
-                }).catch(error => {
-                    console.error('Error resolving promises:', error);
-                });
             })
             .catch(error => {
-                console.error('Error fetching players.txt:', error);
+                console.error('Error fetching settings.txt:', error);
             });
     </script>
 </body>
