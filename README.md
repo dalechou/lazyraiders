@@ -1,8 +1,8 @@
-# lazyraiders
+# Lazyraiders
 
 Example: https://dalechou.github.io/lazyraiders/
 
-This tool provides an overview of World of Warcraft raiders with their item level and latest mythic+ activity.
+This tool provides an overview of World of Warcraft raiders with their item level and latest mythic+ activity. Raider.IO API is used to populate this information.
 
 # How to use this tool?
 
@@ -21,4 +21,4 @@ Please use the contact information here: https://dale.distract.org/contact.html
 
 # History
 
-I wrote the tool in June 2019 in Python, then I used ChatGPT to get the Web version, and Copilot to add item level and style sheet.
+I wrote Lazyraiders in June 2019 in Python, then I used ChatGPT to get the Web version, and Copilot to add item level and style sheet.
